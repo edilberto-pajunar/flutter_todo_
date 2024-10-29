@@ -23,7 +23,16 @@ class NoteView extends StatelessWidget {
         },
         child: const Icon(Icons.add),
       ),
-      body: BlocBuilder<NoteBloc, NoteState>(
+      body: BlocConsumer<NoteBloc, NoteState>(
+        listener: (context, state) {
+          if (state.noteStatus == NoteStatus.failed) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error!),
+              ),
+            );
+          }
+        },
         builder: (context, state) {
           if (state.noteStatus == NoteStatus.loading) {
             return const Center(
